@@ -20,21 +20,25 @@ def generate_launch_description():
             parameters=[{'use_sim_time': False}],
             arguments=['-configuration_directory', cartographer_config_dir,
                        '-configuration_basename', configuration_basename],
-            remappings=[('/scan','/cleaner_2/scan'),
-                        ('/odom','/cleaner_2/odom'),
-                        ('/tf','/cleaner_2/tf')],
+            remappings=[
+                    ("/tf", "/cleaner_2/tf"),
+                    ("/odom", "/cleaner_2/odom"),
+                    ("/scan", "/cleaner_2/scan"),
+                ],
         ),
             
         Node(
             package='cartographer_ros',
             executable='cartographer_occupancy_grid_node',
-            output='screen',
             name='occupancy_grid_node',
+            output='screen',
             parameters=[{'use_sim_time': False}],
-            arguments=['-resolution', '0.05', '-publish_period_sec', '1.0'],
-            remappings=[('/scan','/cleaner_2/scan'),
-                        ('/odom','/cleaner_2/odom'),
-                        ('/tf','/cleaner_2/tf')],
+            arguments=['-resolution', '0.01', '-publish_period_sec', '1.0'],
+                remappings=[
+                    ("/tf", "/cleaner_2/tf"),
+                    ("/odom", "/cleaner_2/odom"),
+                    ("/scan", "/cleaner_2/scan"),
+                ],
         ),
 
         TimerAction(
@@ -46,11 +50,14 @@ def generate_launch_description():
                         name="static_transform_publisher",
                         namespace="",
                         output="screen",
+                        remappings=[
+                            ("/tf", "/cleaner_2/tf"),
+                        ],
                         arguments=[
                             "0.075", "0", "0.150", "0", "0", "0", "base_footprint", "cleaner_2/laser_sensor_link"
                         ]
-                    )
+                    ),
+
                 ]
-        )
-        
+            )      
     ]) 

@@ -8,6 +8,7 @@ def generate_launch_description():
     
     nav2_yaml = os.path.join(get_package_share_directory('real_localization_server'), 'config', 'amcl_config.yaml')
     map_file = os.path.join(get_package_share_directory('real_map_server'), 'config', 'cafeteria_map_real.yaml')
+    rviz_file = os.path.join(get_package_share_directory('real_localization_server'), 'rviz', 'localization.rviz')
 
     return LaunchDescription([
         Node(
@@ -38,5 +39,12 @@ def generate_launch_description():
                         {'autostart': True},
                         {'bond_timeout':0.0},
                         {'node_names': ['map_server', 'amcl']}]
-        )
+        ),
+
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz_node',
+            parameters=[{'use_sim_time': False}],
+            arguments=['-d', rviz_file])
     ])
